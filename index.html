@@ -106,7 +106,32 @@
 </head>
 <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 min-h-screen">
 
-<!-- شاشة تسجيل الدخول السريع - تم استبدال الخلفية بصورة بقرة هولشتاين طبيعية مئة بالمئة في المرعى وخالية تماماً من أي بشر أو خنازير -->
+<!-- الشريط الإعلاني المباشر لتنويهات وخصومات الأطباء الفورية -->
+<div id="liveAnnouncementBar" class="bg-gradient-to-r from-red-600 via-emerald-600 to-teal-600 text-white text-xs sm:text-sm font-bold py-2 px-4 shadow-md overflow-hidden relative z-50">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+        <span class="bg-yellow-400 text-slate-950 px-2 py-0.5 rounded text-[10px] sm:text-xs font-black shrink-0 animate-bounce">🔥 تحديث مباشر من الأطباء</span>
+        <div class="overflow-hidden relative w-full h-5">
+            <div id="liveAnnouncementText" class="absolute whitespace-nowrap animate-marquee right-0 font-bold">
+                أهلاً بكم في عيادة الشفاء للخدمات البيطرية المتكاملة بسوهاج! بانتظار استشاراتكم وحجوزاتكم.
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    @keyframes marquee {
+        0% { transform: translateX(100%); }
+        100% { transform: translateX(-100%); }
+    }
+    .animate-marquee {
+        animation: marquee 25s linear infinite;
+    }
+    .animate-marquee:hover {
+        animation-play-state: paused;
+    }
+</style>
+
+<!-- شاشة تسجيل الدخول السريع للمربين -->
 <div id="loginModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md px-4 transition-all duration-500">
     <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl max-w-lg w-full overflow-hidden border border-emerald-100 dark:border-slate-700 transform transition-transform duration-300 scale-100 relative">
         
@@ -184,12 +209,17 @@
             </a>
 
             <!-- روابط التصفح المخصصة لأجهزة الكمبيوتر -->
-            <nav class="hidden md:flex items-center gap-6">
+            <nav class="hidden lg:flex items-center gap-6">
                 <a href="#about" class="font-extrabold text-sm text-slate-600 hover:text-emerald-600 dark:text-slate-300 dark:hover:text-emerald-400 transition-colors">عن العيادة</a>
                 <a href="#services" class="font-extrabold text-sm text-slate-600 hover:text-emerald-600 dark:text-slate-300 dark:hover:text-emerald-400 transition-colors">خدماتنا</a>
                 <a href="#chicks-calculator" class="font-extrabold text-sm text-slate-600 hover:text-emerald-600 dark:text-slate-300 dark:hover:text-emerald-400 transition-colors">طلب الكتاكيت 🐣</a>
                 <a href="#doctors" class="font-extrabold text-sm text-slate-600 hover:text-emerald-600 dark:text-slate-300 dark:hover:text-emerald-400 transition-colors">الأطباء</a>
                 <a href="#branches" class="font-extrabold text-sm text-slate-600 hover:text-emerald-600 dark:text-slate-300 dark:hover:text-emerald-400 transition-colors">الفروع والعناوين</a>
+                <!-- زر بوابة الأطباء المميز -->
+                <button onclick="openDoctorPanelPortal()" class="font-extrabold text-sm text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 transition-colors flex items-center gap-1">
+                    <i class="fa-solid fa-user-gear"></i>
+                    <span>بوابة الأطباء ⚙️</span>
+                </button>
                 <a href="#booking" class="bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-700 hover:to-teal-600 text-white font-bold px-6 py-2.5 rounded-xl shadow-md hover:shadow-emerald-600/30 transition-all text-sm">احجز الآن</a>
             </nav>
 
@@ -223,6 +253,10 @@
         <a href="#chicks-calculator" onclick="toggleMobileMenu()" class="block font-bold text-sm text-slate-600 dark:text-slate-300 py-2 hover:bg-slate-50 dark:hover:bg-slate-700 px-3 rounded-lg">طلب الكتاكيت 🐣</a>
         <a href="#doctors" onclick="toggleMobileMenu()" class="block font-bold text-sm text-slate-600 dark:text-slate-300 py-2 hover:bg-slate-50 dark:hover:bg-slate-700 px-3 rounded-lg">الأطباء</a>
         <a href="#branches" onclick="toggleMobileMenu()" class="block font-bold text-sm text-slate-600 dark:text-slate-300 py-2 hover:bg-slate-50 dark:hover:bg-slate-700 px-3 rounded-lg">الفروع والعناوين</a>
+        <button onclick="toggleMobileMenu(); openDoctorPanelPortal();" class="w-full text-right font-bold text-sm text-red-600 dark:text-red-400 py-2 hover:bg-slate-50 dark:hover:bg-slate-700 px-3 rounded-lg flex items-center gap-2">
+            <i class="fa-solid fa-user-gear"></i>
+            <span>لوحة تحكم الأطباء ⚙️</span>
+        </button>
         <a href="#booking" onclick="toggleMobileMenu()" class="block text-center bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl shadow-md">احجز الآن</a>
         
         <div id="mobileUserBadge" class="hidden flex items-center justify-between p-3 bg-emerald-50 dark:bg-emerald-950/40 rounded-lg text-emerald-700 dark:text-emerald-300 text-xs font-semibold">
@@ -237,8 +271,8 @@
     </div>
 </header>
 
-<!-- واجهة البداية للعيادة (تضم صور حيوانات فائقة الجودة لإنهاء مشكلة الصور الفارغة والمكسورة) -->
-<section class="relative overflow-hidden pt-12 pb-20 md:py-28 bg-gradient-to-b from-emerald-50 via-white to-slate-50 dark:from-slate-800/40 dark:via-slate-900 dark:to-slate-900">
+<!-- واجهة البداية للعيادة (تضم صور حيوانات فائقة الجودة) -->
+<section id="about" class="relative overflow-hidden pt-12 pb-20 md:py-28 bg-gradient-to-b from-emerald-50 via-white to-slate-50 dark:from-slate-800/40 dark:via-slate-900 dark:to-slate-900">
     <div class="absolute inset-0 z-0 opacity-40 dark:opacity-20 pointer-events-none">
         <div class="absolute top-10 left-10 w-72 h-72 bg-emerald-400 rounded-full blur-3xl animate-pulse"></div>
         <div class="absolute bottom-10 right-10 w-96 h-96 bg-teal-400 rounded-full blur-3xl"></div>
@@ -291,7 +325,7 @@
                 </div>
             </div>
 
-            <!-- الجزء الأيسر: معرض الصور التفاعلي الجديد (تم تصحيح الروابط لضمان عدم ظهور أي صور تالفة وتجنب الخنازير تماماً) -->
+            <!-- الجزء الأيسر: معرض الصور التفاعلي الجديد -->
             <div class="lg:col-span-6 relative mt-6 lg:mt-0">
                 <div class="relative bg-white dark:bg-slate-800 p-3 sm:p-4 rounded-3xl shadow-2xl border border-slate-100 dark:border-slate-700 max-w-lg mx-auto">
                     
@@ -308,7 +342,7 @@
                         </div>
                     </div>
 
-                    <!-- أزرار التنقل السريع بين صور الثروة الحيوانية (بدون خنازير، بدون بشر) -->
+                    <!-- أزرار التنقل السريع بين صور الثروة الحيوانية -->
                     <div class="grid grid-cols-4 gap-2">
                         <!-- 1. الأبقار والمواشي -->
                         <button onclick="changeHeroImage('cow.jpg', 'رعاية الماشية والأبقار')" 
@@ -357,7 +391,7 @@
     </div>
 </section>
 
-<!-- قسم الأطباء المعالجين (يحتوي على الصورة المرجعية الحقيقية WhatsApp Image) -->
+<!-- قسم الأطباء المعالجين -->
 <section id="doctors" class="py-16 bg-white dark:bg-slate-900 border-y border-slate-100 dark:border-slate-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
@@ -392,19 +426,22 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
             
             <!-- طبيب 1: د/ بيتر سلامة (مساواة كاملة بالخدمات) -->
-            <div class="bg-gradient-to-br from-slate-50 to-white dark:from-slate-800/50 dark:to-slate-800 p-6 sm:p-8 rounded-2xl border border-slate-100 dark:border-slate-700 hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+            <div class="bg-gradient-to-br from-slate-50 to-white dark:from-slate-800/50 dark:to-slate-800 p-6 sm:p-8 rounded-2xl border border-slate-100 dark:border-slate-700 hover:shadow-xl transition-all duration-300 flex flex-col justify-between relative overflow-hidden">
+                <!-- شارة خصم الكشف للطبيب الأول -->
+                <div id="doc1ExDiscountBadge" class="absolute top-4 left-4 bg-red-600 text-white text-xs font-black px-3.5 py-1.5 rounded-full shadow-lg hidden animate-pulse"></div>
+                
                 <div>
                     <div class="flex items-center gap-4 mb-4">
-                        <div class="w-14 h-14 rounded-2xl bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-2xl font-black">
-                            <i class="fa-solid fa-user-doctor"></i>
+                        <div class="w-14 h-14 rounded-2xl overflow-hidden bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-2xl font-black shrink-0 border border-emerald-200">
+                            <img id="doc1Img" src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=200&q=80" alt="د بيتر سلامة" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://placehold.co/150x150/059669/ffffff?text=%D8%AF+%D8%A8%D9%8A%D8%AA%D8%B1+%D8%B3%D9%84%D8%A7%D9%85%D8%A9';">
                         </div>
                         <div>
-                            <h3 class="text-xl font-black text-slate-900 dark:text-white">د / بيتر سلامة</h3>
+                            <h3 id="doc1Name" class="text-xl font-black text-slate-900 dark:text-white">د / بيتر سلامة</h3>
                             <span class="inline-block px-2.5 py-0.5 bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 rounded text-xs font-bold mt-1">أخصائي جراحة وتناسل وتلقيح اصطناعي وأمراض مواشي ودواجن</span>
                         </div>
                     </div>
                     
-                    <p class="text-slate-600 dark:text-slate-300 text-xs sm:text-sm leading-relaxed font-semibold mb-6">
+                    <p id="doc1Bio" class="text-slate-600 dark:text-slate-300 text-xs sm:text-sm leading-relaxed font-semibold mb-6">
                         طبيب بيطري متميز ومحترف، يمتلك خبرة واسعة في تقديم أرقى الخدمات الطبية والجراحية المتكاملة في سوهاج، بما يشمل علاج قطعان المواشي، التلقيح الاصطناعي، رعاية الطيور والدواجن، وتصميم التحصينات المتطورة.
                     </p>
 
@@ -430,31 +467,34 @@
                 </div>
 
                 <div class="flex flex-col gap-2 border-t border-slate-100 dark:border-slate-700 pt-4">
-                    <a href="tel:01207112780" class="w-full py-3 bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 rounded-xl text-xs font-black flex items-center justify-center gap-2 transition-all">
+                    <a id="doc1Phone1Btn" href="tel:01207112780" class="w-full py-3 bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 rounded-xl text-xs font-black flex items-center justify-center gap-2 transition-all">
                         <i class="fa-solid fa-phone"></i>
-                        <span>اتصال رئيسي: 01207112780</span>
+                        <span id="doc1Phone1Text">اتصال رئيسي: 01207112780</span>
                     </a>
-                    <a href="tel:01553454032" class="w-full py-3 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-black flex items-center justify-center gap-2 transition-all">
+                    <a id="doc1Phone2Btn" href="tel:01553454032" class="w-full py-3 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-black flex items-center justify-center gap-2 transition-all">
                         <i class="fa-solid fa-phone"></i>
-                        <span>اتصال بديل: 01553454032</span>
+                        <span id="doc1Phone2Text">اتصال بديل: 01553454032</span>
                     </a>
                 </div>
             </div>
 
             <!-- طبيب 2: د/ بيتر سمير (مساواة كاملة بالخدمات والدرجة العلمية) -->
-            <div class="bg-gradient-to-br from-slate-50 to-white dark:from-slate-800/50 dark:to-slate-800 p-6 sm:p-8 rounded-2xl border border-slate-100 dark:border-slate-700 hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+            <div class="bg-gradient-to-br from-slate-50 to-white dark:from-slate-800/50 dark:to-slate-800 p-6 sm:p-8 rounded-2xl border border-slate-100 dark:border-slate-700 hover:shadow-xl transition-all duration-300 flex flex-col justify-between relative overflow-hidden">
+                <!-- شارة خصم الكشف للطبيب الثاني -->
+                <div id="doc2ExDiscountBadge" class="absolute top-4 left-4 bg-red-600 text-white text-xs font-black px-3.5 py-1.5 rounded-full shadow-lg hidden animate-pulse"></div>
+
                 <div>
                     <div class="flex items-center gap-4 mb-4">
-                        <div class="w-14 h-14 rounded-2xl bg-teal-100 dark:bg-teal-900/40 text-teal-600 dark:text-teal-400 flex items-center justify-center text-2xl font-black">
-                            <i class="fa-solid fa-stethoscope"></i>
+                        <div class="w-14 h-14 rounded-2xl overflow-hidden bg-teal-100 dark:bg-teal-900/40 text-teal-600 dark:text-teal-400 flex items-center justify-center text-2xl font-black shrink-0 border border-teal-200">
+                            <img id="doc2Img" src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=200&q=80" alt="د بيتر سمير" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://placehold.co/150x150/059669/ffffff?text=%D8%AF+%D8%A8%D9%8A%D8%AA%D8%B1+%D8%B3%D9%85%D9%8A%D8%B1';">
                         </div>
                         <div>
-                            <h3 class="text-xl font-black text-slate-900 dark:text-white">د / بيتر سمير</h3>
+                            <h3 id="doc2Name" class="text-xl font-black text-slate-900 dark:text-white">د / بيتر سمير</h3>
                             <span class="inline-block px-2.5 py-0.5 bg-teal-50 dark:bg-teal-950 text-teal-700 dark:text-teal-300 rounded text-xs font-bold mt-1">أخصائي جراحة وتناسل وتلقيح اصطناعي وأمراض مواشي ودواجن</span>
                         </div>
                     </div>
                     
-                    <p class="text-slate-600 dark:text-slate-300 text-xs sm:text-sm leading-relaxed font-semibold mb-6">
+                    <p id="doc2Bio" class="text-slate-600 dark:text-slate-300 text-xs sm:text-sm leading-relaxed font-semibold mb-6">
                         طبيب بيطري متميز ومحترف، يمتلك خبرة واسعة في تقديم أرقى الخدمات الطبية والجراحية المتكاملة في سوهاج، بما يشمل علاج قطعان المواشي، التلقيح الاصطناعي، رعاية الطيور والدواجن، وتصميم التحصينات المتطورة.
                     </p>
 
@@ -480,9 +520,9 @@
                 </div>
 
                 <div class="flex flex-col gap-2 border-t border-slate-100 dark:border-slate-700 pt-4">
-                    <a href="tel:01201676133" class="w-full py-3 bg-teal-50 hover:bg-teal-100 dark:bg-teal-950/40 text-teal-700 dark:text-teal-400 rounded-xl text-xs font-black flex items-center justify-center gap-2 transition-all">
+                    <a id="doc2Phone1Btn" href="tel:01201676133" class="w-full py-3 bg-teal-50 hover:bg-teal-100 dark:bg-teal-950/40 text-teal-700 dark:text-teal-400 rounded-xl text-xs font-black flex items-center justify-center gap-2 transition-all">
                         <i class="fa-solid fa-phone"></i>
-                        <span>اتصال رئيسي: 01201676133</span>
+                        <span id="doc2Phone1Text">اتصال رئيسي: 01201676133</span>
                     </a>
                     <div class="py-3 invisible hidden sm:block"></div>
                 </div>
@@ -499,8 +539,8 @@
         
         <div class="text-center max-w-3xl mx-auto mb-12">
             <span class="inline-block bg-yellow-100 dark:bg-yellow-900/40 text-yellow-800 dark:text-yellow-300 text-xs px-3 py-1 rounded-full font-bold">قسم حجز وطلب الكتاكيت 🐣</span>
-            <h2 class="text-3xl font-black text-slate-900 dark:text-white mt-2">اختر سلالة الكتاكيت المطلوبة واحجز دفعتك بسعر اليوم</h2>
-            <p class="text-slate-500 dark:text-slate-300 mt-3 text-sm font-semibold">توفير أفضل سلالات كتاكيت التسمين والبلدي والساسو في سوهاج مع برامج تحصين مثالية وإشراف كامل.</p>
+            <h2 class="text-3xl font-black text-slate-900 dark:text-white mt-2">اختر سلالة الكتاكيت المطلوبة واحجز دفعتك بسعر اليوم المباشر</h2>
+            <p class="text-slate-500 dark:text-slate-300 mt-3 text-sm font-semibold">توفير أفضل سلالات كتاكيت التسمين والبلدي والساسو في سوهاج مع أسعار حية ومباشرة من بورصة العيادة اليومية.</p>
         </div>
 
         <div class="bg-white dark:bg-slate-800 rounded-3xl p-6 sm:p-10 shadow-xl border border-slate-100 dark:border-slate-700 max-w-4xl mx-auto">
@@ -509,7 +549,7 @@
                 <div class="space-y-4">
                     <h3 class="text-lg font-bold text-slate-800 dark:text-white pb-2 border-b border-slate-100 dark:border-slate-700 flex items-center gap-2">
                         <i class="fa-solid fa-cubes text-emerald-500"></i>
-                        <span>تحديد بيانات طلب الكتاكيت</span>
+                        <span>تحديد بياناتطلب الكتاكيت</span>
                     </h3>
 
                     <div>
@@ -535,22 +575,32 @@
 
                     <div>
                         <label class="block text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-300 mb-1">اختر فرع الاستلام المفضل بسوهاج</label>
-                        <div class="grid grid-cols-2 gap-3">
+                        <div class="grid grid-cols-2 gap-3 mb-2">
                             <label class="flex items-center gap-2 p-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl cursor-pointer text-xs sm:text-sm">
-                                <input type="radio" name="chickBranch" value="بيت علام" checked class="text-emerald-500 focus:ring-emerald-500">
+                                <input type="radio" name="chickBranch" value="بيت علام" checked onchange="calculateChicks()" class="text-emerald-500 focus:ring-emerald-500">
                                 <span>فرع بيت علام</span>
                             </label>
                             <label class="flex items-center gap-2 p-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl cursor-pointer text-xs sm:text-sm">
-                                <input type="radio" name="chickBranch" value="بني حميل" class="text-emerald-500 focus:ring-emerald-500">
+                                <input type="radio" name="chickBranch" value="بني حميل" onchange="calculateChicks()" class="text-emerald-500 focus:ring-emerald-500">
                                 <span>فرع بني حميل</span>
                             </label>
                         </div>
+                    </div>
+
+                    <!-- قائمة اختيار الدكتور المستلم للطلب لكي تصله رسالة الواتس مباشرة -->
+                    <div>
+                        <label class="block text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-300 mb-1">اختر الدكتور المعني لتلقي طلب الحجز بالواتساب *</label>
+                        <select id="chickDoctor" onchange="calculateChicks()" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm dark:text-white font-bold">
+                            <option value="د بيتر سمير" selected>د / بيتر سمير (جراحة وتناسل وتلقيح - 01201676133)</option>
+                            <option value="د بيتر سلامة">د / بيتر سلامة (جراحة وتناسل وتلقيح - 01207112780)</option>
+                        </select>
+                        <p class="text-[11px] text-emerald-600 dark:text-emerald-400 mt-1">سيتم توجيه رسالة حجز دفعة الكتاكيت فوراً إلى رقم الدكتور الذي ستختاره من القائمة.</p>
                     </div>
                 </div>
 
                 <div class="bg-emerald-50 dark:bg-slate-900/80 p-6 rounded-2xl border border-emerald-100 dark:border-slate-700 space-y-6 flex flex-col justify-between h-full">
                     <div>
-                        <h4 class="text-sm font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2">ملخص طلب الحجز</h4>
+                        <h4 class="text-sm font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2">ملخص طلب الحجز المباشر</h4>
                         
                         <div class="space-y-3">
                             <div class="flex justify-between items-center text-sm font-medium">
@@ -561,16 +611,31 @@
                                 <span class="text-slate-500">الكمية المطلوبة:</span>
                                 <span id="summaryQty" class="text-emerald-600 dark:text-emerald-400 font-extrabold text-lg">-</span>
                             </div>
+                            <div class="flex justify-between items-center text-sm font-medium">
+                                <span class="text-slate-500">فرع الاستلام:</span>
+                                <span id="summaryBranch" class="text-slate-800 dark:text-white font-bold">-</span>
+                            </div>
+                            <div class="flex justify-between items-center text-sm font-medium">
+                                <span class="text-slate-500">الدكتور المستلم للطلب:</span>
+                                <span id="summaryDoctor" class="text-emerald-600 dark:text-emerald-400 font-bold text-sm">-</span>
+                            </div>
                             <hr class="border-slate-200 dark:border-slate-700 my-2">
+                            
+                            <!-- سعر الكتكوت اليومي يتحدث لحظياً من الفايربيز -->
                             <div class="p-3.5 bg-white dark:bg-slate-800 rounded-xl border border-emerald-100 dark:border-slate-700 text-center">
-                                <span class="block text-xs font-bold text-slate-400">سعر الدورة اليوم</span>
-                                <span class="block text-sm font-black text-emerald-600 dark:text-emerald-400 mt-1">يحدده الطبيب بالواتساب فوراً 💬</span>
+                                <span class="block text-xs font-bold text-slate-400">سعر البورصة اليوم للمنصة</span>
+                                <div id="liveChickPriceDisplay" class="text-base sm:text-lg font-black text-emerald-600 dark:text-emerald-400 mt-1">
+                                    يحدده الطبيب بالواتساب فوراً 💬
+                                </div>
+                                <div id="liveChickTotalDisplay" class="text-xs font-extrabold text-slate-500 dark:text-slate-400 mt-1 hidden">
+                                    إجمالي السعر: -- ج.م
+                                </div>
                             </div>
                         </div>
 
                         <div class="mt-4 p-3 bg-amber-50 dark:bg-amber-950/40 rounded-xl border border-amber-200 dark:border-amber-800 flex items-start gap-2 text-xs text-amber-800 dark:text-amber-200">
                             <i class="fa-solid fa-triangle-exclamation mt-0.5"></i>
-                            <p>نظراً لعدم استقرار البورصة وتغير الأسعار يومياً، سيقوم الأطباء بمراجعة طلبك وإعطائك أفضل سعر حالي للدفعة بمجرد النقر على زر الحجز.</p>
+                            <p id="calcWarningText">نظراً لعدم استقرار البورصة وتغير الأسعار يومياً، سيقوم الطبيب المختار بمجرد استقبال رسالتك بمراجعة طلبك وإعطائك أفضل سعر حالي للدفعة.</p>
                         </div>
                     </div>
 
@@ -682,7 +747,7 @@
                     
                     <div class="mb-4 bg-emerald-50 dark:bg-emerald-950/30 p-4 rounded-2xl border border-emerald-100 dark:border-slate-700">
                         <span class="block text-xs font-black text-emerald-800 dark:text-emerald-400 mb-1">العنوان بالتفصيل 📍</span>
-                        <p class="text-sm font-bold text-slate-700 dark:text-slate-200 leading-relaxed">المربع الشرقي - بجوار صيدلية الدكتور بولس</p>
+                        <p id="branch1Address" class="text-sm font-bold text-slate-700 dark:text-slate-200 leading-relaxed">المربع الشرقي - بجوار صيدلية الدكتور بولس</p>
                     </div>
                     
                     <div class="space-y-3 pt-3 border-t border-slate-100 dark:border-slate-700">
@@ -702,7 +767,7 @@
                 </div>
 
                 <div class="mt-6 space-y-3">
-                    <a href="https://maps.app.goo.gl/dyoth38FNBAkNVqn9" target="_blank" rel="noopener noreferrer" 
+                    <a id="branch1MapsLink" href="https://maps.app.goo.gl/6uo1LcnZQbyQ6YYx7" target="_blank" rel="noopener noreferrer" 
                        class="w-full text-center py-3 bg-slate-900 hover:bg-slate-800 text-white dark:bg-slate-700 dark:hover:bg-slate-600 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-md">
                         <i class="fa-solid fa-map-location-dot"></i>
                         <span>عرض موقع الفرع على جوجل مابس (Google Maps)</span>
@@ -726,7 +791,7 @@
                     
                     <div class="mb-4 bg-teal-50 dark:bg-teal-950/30 p-4 rounded-2xl border border-teal-100 dark:border-slate-700">
                         <span class="block text-xs font-black text-teal-800 dark:text-teal-400 mb-1">العنوان بالتفصيل 📍</span>
-                        <p class="text-sm font-bold text-slate-700 dark:text-slate-200 leading-relaxed">سوهاج - بنى حميل - وسط البلد</p>
+                        <p id="branch2Address" class="text-sm font-bold text-slate-700 dark:text-slate-200 leading-relaxed">سوهاج - بنى حميل - وسط البلد</p>
                     </div>
                     
                     <div class="space-y-3 pt-3 border-t border-slate-100 dark:border-slate-700">
@@ -745,7 +810,12 @@
                     </div>
                 </div>
 
-                <div class="mt-6">
+                <div class="mt-6 space-y-3">
+                    <a id="branch2MapsLink" href="https://maps.google.com" target="_blank" rel="noopener noreferrer" 
+                       class="w-full text-center py-3 bg-slate-900 hover:bg-slate-800 text-white dark:bg-slate-700 dark:hover:bg-slate-600 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-md">
+                        <i class="fa-solid fa-map-location-dot"></i>
+                        <span>عرض موقع الفرع على جوجل مابس (Google Maps)</span>
+                    </a>
                     <a href="#booking" onclick="selectBranchInForm('بنى حميل')" class="block text-center py-3 bg-teal-50 dark:bg-teal-950/40 hover:bg-teal-100 text-teal-600 dark:text-teal-400 rounded-xl font-bold text-xs transition-colors">
                         احجز زيارة / كشف لفرع بنى حميل
                     </a>
@@ -768,7 +838,7 @@
             <div class="relative z-10">
                 <div class="text-center mb-10">
                     <h2 class="text-3xl font-black">احجز موعد كشف أو زيارة بالواتساب</h2>
-                    <p class="text-emerald-50 mt-2 text-sm font-semibold">املأ البيانات أدناه وسيتم توجيهك مباشرة لرسالة مجهة للدكتور المعني بالحجز</p>
+                    <p class="text-emerald-50 mt-2 text-sm font-semibold">املأ البيانات أدناه وسيتم توجيهك مباشرة لرسالة موجهة للدكتور المعني بالحجز</p>
                 </div>
 
                 <form id="bookingForm" onsubmit="handleBooking(event)" class="space-y-4 text-right text-slate-800">
@@ -850,7 +920,7 @@
     </div>
 </section>
 
-<!-- قسم الأسئلة الشائعة (FAQ) المصمم خصيصاً للتصدر بمحركات بحث جوجل والظهور بالنتيجة الأولى -->
+<!-- قسم الأسئلة الشائعة (FAQ) -->
 <section class="py-16 bg-slate-100 dark:bg-slate-900/40 border-t border-slate-200 dark:border-slate-800">
     <div class="max-w-4xl mx-auto px-4 sm:px-6">
         <div class="text-center mb-10">
@@ -937,10 +1007,11 @@
             <div class="lg:col-span-7">
                 <h3 class="text-xl font-black text-slate-900 dark:text-white mb-6 flex items-center gap-2">
                     <span>آراء المربين والعملاء بالعيادة</span>
-                    <span class="text-xs bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 px-2 py-1 rounded-md font-bold">تفاعلي مباشر</span>
+                    <span class="text-xs bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 px-2 py-1 rounded-md font-bold">تفاعلي مباشر من السحابة 🌐</span>
                 </h3>
                 
                 <div id="reviewsContainer" class="space-y-4 max-h-[380px] overflow-y-auto pr-2">
+                    <!-- تعليقات افتراضية يتم استبدالها تلقائياً بالتعليقات السحابية الحية -->
                     <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm">
                         <div class="flex items-center justify-between mb-2">
                             <span class="font-extrabold text-slate-800 dark:text-white text-sm">أحمد أبو هريرة (مربي ماشية)</span>
@@ -967,7 +1038,308 @@
     </div>
 </section>
 
-<!-- نافذة التنبيه التفاعلية عند حفظ وحجز البيانات -->
+<!-- بوابة تحكم الأطباء (لوحة التحكم المخفية التفاعلية) -->
+<div id="doctorPanelModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md px-4 transition-all duration-300 hidden">
+    <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl max-w-2xl w-full overflow-hidden border border-red-200 dark:border-slate-700 transform transition-all">
+        
+        <div class="p-6 sm:p-8">
+            <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-4 mb-4">
+                <h3 class="text-xl font-black text-slate-900 dark:text-white flex items-center gap-2">
+                    <i class="fa-solid fa-user-gear text-red-600"></i>
+                    <span>بوابة تحكم أطباء عيادة الشفاء ⚙️</span>
+                </h3>
+                <button onclick="closeDoctorPanelPortal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-white text-xl">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- 1. شاشة إدخال بيانات الدخول المعقدة والآمنة للأطباء -->
+            <div id="doctorAuthSection" class="space-y-4">
+                <div class="bg-amber-50 dark:bg-amber-950/40 p-4 rounded-xl border border-amber-200 dark:border-amber-800 text-right text-xs text-amber-900 dark:text-amber-200">
+                    <p class="font-bold mb-1">🔒 نظام حماية مشدد:</p>
+                    <p>يرجى إدخال اسم المستخدم السري وكلمة المرور الخاصة بك كطبيب للولوج بأمان للوحة الإدارة وتعديل بياناتك والعروض.</p>
+                </div>
+                
+                <div class="space-y-3 text-right">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">اسم المستخدم البيطري السري *</label>
+                        <input type="text" id="doctorUsername" placeholder="أدخل اسم المستخدم السري هنا" 
+                               class="w-full text-center py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-red-500 font-bold dark:text-white text-sm">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">كلمة المرور المشددة *</label>
+                        <input type="password" id="doctorPassword" placeholder="••••••••••••" 
+                               class="w-full text-center py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-red-500 font-bold dark:text-white text-sm">
+                    </div>
+                    
+                    <button onclick="authenticateDoctor()" class="w-full bg-red-600 hover:bg-red-700 text-white font-black py-3 rounded-xl transition-all shadow-md mt-2 flex items-center justify-center gap-2 text-sm">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <span>تأكيد تسجيل الدخول الآمن</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 2. شاشة لوحة التحكم الكلية بعد التحقق -->
+            <div id="doctorControlsSection" class="hidden space-y-4">
+                
+                <div class="bg-emerald-50 dark:bg-emerald-950/20 p-4 rounded-2xl border border-emerald-100 dark:border-emerald-900/40 flex items-center justify-between">
+                    <div class="text-right">
+                        <span id="doctorPanelGreeting" class="text-sm font-black text-emerald-800 dark:text-emerald-400 block">مرحباً دكتور 👋</span>
+                        <span class="text-[10px] text-slate-500 block">أي تعديل تقوم به هنا سيحدث لحظياً لكافة المربين والزوار!</span>
+                    </div>
+                    <button onclick="logoutDoctorPanel()" class="bg-red-100 text-red-600 dark:bg-red-950/40 dark:text-red-400 hover:bg-red-200 px-3 py-1.5 rounded-lg text-xs font-bold transition-all">
+                        <i class="fa-solid fa-power-off"></i> خروج آمن
+                    </button>
+                </div>
+
+                <!-- أزرار تبديل التبويبات لتنظيم لوحة التحكم الضخمة المحدثة (أربعة أقسام) -->
+                <div class="flex border-b border-slate-100 dark:border-slate-700">
+                    <button onclick="switchDoctorTab('general')" id="tabBtn-general" class="w-1/4 py-2 text-[10px] sm:text-xs font-black border-b-2 border-red-500 text-red-600 dark:text-red-400">الأسعار والإعلانات</button>
+                    <button onclick="switchDoctorTab('profile')" id="tabBtn-profile" class="w-1/4 py-2 text-[10px] sm:text-xs font-black text-slate-500 border-b-2 border-transparent">الملف التعريفي</button>
+                    <button onclick="switchDoctorTab('branches')" id="tabBtn-branches" class="w-1/4 py-2 text-[10px] sm:text-xs font-black text-slate-500 border-b-2 border-transparent">الفروع والجغرافيا</button>
+                    <button onclick="switchDoctorTab('security')" id="tabBtn-security" class="w-1/4 py-2 text-[10px] sm:text-xs font-black text-slate-500 border-b-2 border-transparent">حساب الدخول 🔒</button>
+                </div>
+
+                <div class="max-h-[50vh] overflow-y-auto pr-2 text-right space-y-4 py-2">
+                    
+                    <!-- التبويب الأول: الأسعار والإعلانات العامة -->
+                    <div id="doctorTab-general" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">شريط الإعلان المتحرك أعلى المنصة *</label>
+                            <textarea id="editAnnouncement" rows="2" class="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:text-white text-xs font-bold" placeholder="عرض اليوم في عيادة الشفاء..."></textarea>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">سعر كتكوت روس (ج.م)</label>
+                                <input type="number" step="0.5" id="priceRoss" class="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:text-white font-bold text-xs">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">سعر كتكوت كب (ج.م)</label>
+                                <input type="number" step="0.5" id="priceCobb" class="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:text-white font-bold text-xs">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">سعر كتكوت ساسو (ج.م)</label>
+                                <input type="number" step="0.5" id="priceSasso" class="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:text-white font-bold text-xs">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">سعر كتكوت بلدي (ج.م)</label>
+                                <input type="number" step="0.5" id="priceBaladi" class="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:text-white font-bold text-xs">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">خصم حجز الكتاكيت للعملاء (%)</label>
+                                <input type="number" min="0" max="100" id="editDiscountPercent" class="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:text-white font-bold text-xs" placeholder="مثال: 5">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">تنبيه طارئ في ملخص الحاسبة</label>
+                                <input type="text" id="emergencyNotice" class="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:text-white font-bold text-xs" placeholder="مثال: متوفر تسليم فوري">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- التبويب الثاني: تعديل الملف التعريفي الشخصي لكل طبيب على حدة بناء على تسجيل الدخول -->
+                    <div id="doctorTab-profile" class="space-y-4 hidden">
+                        
+                        <!-- دكتور 1: بيتر سلامة (يظهر فقط إذا كان د. بيتر سلامة مسجل دخوله) -->
+                        <div id="profileEditCard-doc1" class="p-3.5 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-150 dark:border-slate-700 space-y-3">
+                            <h4 class="text-xs font-black text-emerald-600 dark:text-emerald-400 border-b border-slate-200 dark:border-slate-700 pb-1.5 flex items-center gap-1.5">
+                                <i class="fa-solid fa-user-doctor"></i>
+                                <span>تعديل حساب الدكتور بيتر سلامة</span>
+                            </h4>
+                            <div class="grid grid-cols-1 gap-3">
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-500 mb-0.5">الاسم الشخصي</label>
+                                    <input type="text" id="editDoc1Name" class="w-full p-2 rounded-lg border dark:border-slate-700 dark:bg-slate-800 text-xs font-bold dark:text-white">
+                                </div>
+                                <div class="space-y-1">
+                                    <label class="block text-[10px] font-bold text-slate-500 mb-0.5">صورة الدكتور (رابط مباشر أو اختيار من جهازك/الألبوم) *</label>
+                                    <input type="text" id="editDoc1Img" class="w-full p-2 rounded-lg border dark:border-slate-700 dark:bg-slate-800 text-xs font-bold dark:text-white" placeholder="رابط URL الصورة">
+                                    <div class="grid grid-cols-2 gap-2 mt-1">
+                                        <button type="button" onclick="openImageAlbum('editDoc1Img')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-extrabold py-2 px-3 rounded-lg flex items-center justify-center gap-1 transition">
+                                            <i class="fa-solid fa-images"></i>
+                                            <span>الصور الجاهزة بالمنصة</span>
+                                        </button>
+                                        <label class="bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-extrabold py-2 px-3 rounded-lg flex items-center justify-center gap-1 cursor-pointer transition text-center">
+                                            <i class="fa-solid fa-image-portrait"></i>
+                                            <span>ألبوم صور هاتفك/جهازك</span>
+                                            <input type="file" accept="image/*" onchange="handleLocalImageUpload(event, 'editDoc1Img')" class="hidden">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-500 mb-0.5">النبذة التعريفية (الخبرات والوصف)</label>
+                                <textarea id="editDoc1Bio" rows="2" class="w-full p-2 rounded-lg border dark:border-slate-700 dark:bg-slate-800 text-xs font-bold dark:text-white"></textarea>
+                            </div>
+                            <div class="grid grid-cols-3 gap-2">
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-500 mb-0.5">رقم الاتصال 1</label>
+                                    <input type="tel" id="editDoc1Phone1" class="w-full p-2 rounded-lg border dark:border-slate-700 dark:bg-slate-800 text-xs font-bold dark:text-white text-left">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-500 mb-0.5">رقم الاتصال 2</label>
+                                    <input type="tel" id="editDoc1Phone2" class="w-full p-2 rounded-lg border dark:border-slate-700 dark:bg-slate-800 text-xs font-bold dark:text-white text-left">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-500 mb-0.5">عرض خصم الكشف</label>
+                                    <input type="text" id="editDoc1ExDiscount" class="w-full p-2 rounded-lg border dark:border-slate-700 dark:bg-slate-800 text-xs font-bold dark:text-white text-center" placeholder="خصم 20%، كشف مجاني...">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- دكتور 2: بيتر سمير (يظهر فقط إذا كان د. بيتر سمير مسجل دخوله) -->
+                        <div id="profileEditCard-doc2" class="p-3.5 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-150 dark:border-slate-700 space-y-3">
+                            <h4 class="text-xs font-black text-teal-600 dark:text-teal-400 border-b border-slate-200 dark:border-slate-700 pb-1.5 flex items-center gap-1.5">
+                                <i class="fa-solid fa-stethoscope"></i>
+                                <span>تعديل حساب الدكتور بيتر سمير</span>
+                            </h4>
+                            <div class="grid grid-cols-1 gap-3">
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-500 mb-0.5">الاسم الشخصي</label>
+                                    <input type="text" id="editDoc2Name" class="w-full p-2 rounded-lg border dark:border-slate-700 dark:bg-slate-800 text-xs font-bold dark:text-white">
+                                </div>
+                                <div class="space-y-1">
+                                    <label class="block text-[10px] font-bold text-slate-500 mb-0.5">صورة الدكتور (رابط مباشر أو اختيار من جهازك/الألبوم) *</label>
+                                    <input type="text" id="editDoc2Img" class="w-full p-2 rounded-lg border dark:border-slate-700 dark:bg-slate-800 text-xs font-bold dark:text-white" placeholder="رابط URL الصورة">
+                                    <div class="grid grid-cols-2 gap-2 mt-1">
+                                        <button type="button" onclick="openImageAlbum('editDoc2Img')" class="bg-teal-600 hover:bg-teal-700 text-white text-[10px] font-extrabold py-2 px-3 rounded-lg flex items-center justify-center gap-1 transition">
+                                            <i class="fa-solid fa-images"></i>
+                                            <span>الصور الجاهزة بالمنصة</span>
+                                        </button>
+                                        <label class="bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-extrabold py-2 px-3 rounded-lg flex items-center justify-center gap-1 cursor-pointer transition text-center">
+                                            <i class="fa-solid fa-image-portrait"></i>
+                                            <span>ألبوم صور هاتفك/جهازك</span>
+                                            <input type="file" accept="image/*" onchange="handleLocalImageUpload(event, 'editDoc2Img')" class="hidden">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-500 mb-0.5">النبذة التعريفية (الخبرات والوصف)</label>
+                                <textarea id="editDoc2Bio" rows="2" class="w-full p-2 rounded-lg border dark:border-slate-700 dark:bg-slate-800 text-xs font-bold dark:text-white"></textarea>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-500 mb-0.5">رقم الاتصال الرئيسي</label>
+                                    <input type="tel" id="editDoc2Phone1" class="w-full p-2 rounded-lg border dark:border-slate-700 dark:bg-slate-800 text-xs font-bold dark:text-white text-left">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-500 mb-0.5">عرض خصم الكشف</label>
+                                    <input type="text" id="editDoc2ExDiscount" class="w-full p-2 rounded-lg border dark:border-slate-700 dark:bg-slate-800 text-xs font-bold dark:text-white text-center" placeholder="مثال: خصم 30% ع الكشف">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- التبويب الثالث: تعديل بيانات الفروع والعناوين الجغرافية ورابط GPS خرائط جوجل -->
+                    <div id="doctorTab-branches" class="space-y-4 hidden">
+                        <!-- فرع بيت علام -->
+                        <div class="p-3.5 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-150 dark:border-slate-700 space-y-3">
+                            <h4 class="text-xs font-black text-emerald-600 dark:text-emerald-400 border-b border-slate-200 dark:border-slate-700 pb-1.5 flex items-center gap-1">
+                                <i class="fa-solid fa-location-dot"></i>
+                                <span>إدارة بيانات فرع بيت علام</span>
+                            </h4>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-500 mb-0.5">العنوان الجغرافي بالتفصيل</label>
+                                <input type="text" id="editBranch1Address" class="w-full p-2 rounded-lg border dark:border-slate-700 dark:bg-slate-800 text-xs font-bold dark:text-white">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-500 mb-0.5">رابط خرائط جوجل (GPS Google Maps URL)</label>
+                                <input type="text" id="editBranch1MapUrl" class="w-full p-2 rounded-lg border dark:border-slate-700 dark:bg-slate-800 text-xs font-bold dark:text-white text-left">
+                            </div>
+                        </div>
+
+                        <!-- فرع بني حميل -->
+                        <div class="p-3.5 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-150 dark:border-slate-700 space-y-3">
+                            <h4 class="text-xs font-black text-teal-600 dark:text-teal-400 border-b border-slate-200 dark:border-slate-700 pb-1.5 flex items-center gap-1">
+                                <i class="fa-solid fa-location-dot"></i>
+                                <span>إدارة بيانات فرع بنى حميل</span>
+                            </h4>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-500 mb-0.5">العنوان الجغرافي بالتفصيل</label>
+                                <input type="text" id="editBranch2Address" class="w-full p-2 rounded-lg border dark:border-slate-700 dark:bg-slate-800 text-xs font-bold dark:text-white">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-500 mb-0.5">رابط خرائط جوجل (GPS Google Maps URL)</label>
+                                <input type="text" id="editBranch2MapUrl" class="w-full p-2 rounded-lg border dark:border-slate-700 dark:bg-slate-800 text-xs font-bold dark:text-white text-left">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- التبويب الرابع المضاف حديثاً: تعديل بيانات الدخول (اسم المستخدم السري وكلمة المرور) لكل طبيب بحرية -->
+                    <div id="doctorTab-security" class="space-y-4 hidden text-right">
+                        <div class="p-4 bg-red-50 dark:bg-red-950/20 rounded-2xl border border-red-100 dark:border-red-900/40">
+                            <h4 class="text-xs font-black text-red-600 dark:text-red-400 flex items-center gap-1.5 justify-end">
+                                <i class="fa-solid fa-user-shield"></i>
+                                <span>تغيير بيانات تسجيل الدخول الخاصة بك</span>
+                            </h4>
+                            <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
+                                يمكنك تغيير اسم المستخدم السري وكلمة المرور لحسابك الخاص دكتور. يرجى كتابة البيانات الجديدة بدقة فائقة وحفظها لكي تستخدمها في المرة القادمة.
+                            </p>
+                        </div>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">اسم المستخدم الجديد للحساب *</label>
+                                <input type="text" id="newDoctorUsername" class="w-full text-center py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-red-500 font-bold dark:text-white text-xs">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">كلمة المرور الجديدة للحساب *</label>
+                                <input type="password" id="newDoctorPassword" class="w-full text-center py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-red-500 font-bold dark:text-white text-xs" placeholder="أدخل كلمة مرور جديدة قوية">
+                            </div>
+                            <button onclick="changeDoctorCredentials()" class="w-full bg-red-600 hover:bg-red-700 text-white font-black py-3 rounded-xl transition-all shadow-md flex items-center justify-center gap-2 text-xs">
+                                <i class="fa-solid fa-key"></i>
+                                <span>تأكيد وتحديث بيانات الدخول الخاصة بي 🔒</span>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="flex gap-3 pt-3 border-t border-slate-100 dark:border-slate-700">
+                    <button onclick="saveDoctorLiveSettings()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black py-3.5 rounded-xl transition-all shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2 text-sm">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        <span>حفظ ونشر التعديلات فوراً على السحابة</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- مودال ألبوم الصور سهل الاستخدام للأطباء -->
+<div id="imageAlbumModal" class="fixed inset-0 z-[60] flex items-center justify-center bg-slate-950/80 backdrop-blur-md px-4 hidden transition-all duration-300">
+    <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl max-w-xl w-full overflow-hidden border border-emerald-500 transform transition-all p-6 text-right">
+        <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3 mb-4">
+            <h3 class="text-lg font-black text-slate-900 dark:text-white flex items-center gap-2">
+                <i class="fa-solid fa-images text-emerald-600"></i>
+                <span>ألبوم الصور المعتمدة لعيادة الشفاء 📸</span>
+            </h3>
+            <button onclick="closeImageAlbum()" class="text-slate-400 hover:text-slate-600 dark:hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        
+        <p class="text-xs text-slate-500 dark:text-slate-400 mb-4 font-bold">
+            اختر الصورة المناسبة لملفك الشخصي من الصور الجاهزة بالأسفل بضغطة واحدة، وسيتم تعيينها تلقائياً دون الحاجة لكتابة روابط!
+        </p>
+        
+        <div class="grid grid-cols-3 gap-3 max-h-[40vh] overflow-y-auto p-1" id="albumGrid">
+            <!-- سيتم ملؤه بواسطة الجافاسكربت -->
+        </div>
+        
+        <div class="mt-4 border-t border-slate-100 dark:border-slate-700 pt-3 flex justify-end">
+            <button onclick="closeImageAlbum()" class="bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-800 dark:text-white font-bold px-4 py-2 rounded-xl text-xs">
+                إغلاق الألبوم
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- لافتة التنبيه التفاعلية عند حفظ وحجز البيانات -->
 <div id="customAlert" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-slate-900 text-white p-4 rounded-xl shadow-2xl flex items-center gap-3 border border-slate-700">
     <div class="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-white">
         <i class="fa-solid fa-circle-info"></i>
@@ -1009,23 +1381,24 @@
                     <li><a href="#doctors" class="hover:text-emerald-400 transition-colors">طاقم الأطباء</a></li>
                     <li><a href="#branches" class="hover:text-emerald-400 transition-colors">فروعنا وعناويننا</a></li>
                     <li><a href="#booking" class="hover:text-emerald-400 transition-colors">حجز كشف بالواتساب</a></li>
+                    <li><button onclick="openDoctorPanelPortal()" class="text-red-400 hover:text-red-300 font-bold transition-colors">بوابة الأطباء ⚙️</button></li>
                 </ul>
             </div>
 
-            <div class="md:col-span-4 space-y-4">
+            <div id="footerContactBlock" class="md:col-span-4 space-y-4">
                 <h4 class="text-sm font-black text-white uppercase tracking-wider">الاتصال والفرع الرئيسي</h4>
                 <div class="space-y-2 text-xs sm:text-sm text-slate-400 font-bold">
                     <p class="flex items-center gap-2">
                         <i class="fa-solid fa-user-doctor text-emerald-500"></i>
-                        <span>د / بيتر سلامة: 01207112780 / 01553454032</span>
+                        <span id="footerDoc1Phone">د / بيتر سلامة: 01207112780 / 01553454032</span>
                     </p>
                     <p class="flex items-center gap-2">
                         <i class="fa-solid fa-stethoscope text-teal-500"></i>
-                        <span>د / بيتر سمير: 01201676133</span>
+                        <span id="footerDoc2Phone">د / بيتر سمير: 01201676133</span>
                     </p>
                     <p class="flex items-center gap-2">
                         <i class="fa-solid fa-location-dot text-emerald-500"></i>
-                        <span>بيت علام (بجوار صيدلية د. بولس) - بني حميل، سوهاج</span>
+                        <span id="footerBranchAddress">بيت علام (بجوار صيدلية د. بولس) - بني حميل، سوهاج</span>
                     </p>
                 </div>
             </div>
@@ -1044,6 +1417,749 @@
     </div>
 </footer>
 
+<!-- مكتبات الفايربيز الأساسية وقرص الحماية الخاص بالوصول للبيانات السحابية -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'shifa-vet-clinic-v1';
+    const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
+        apiKey: "",
+        authDomain: "mock-project.firebaseapp.com",
+        projectId: "mock-project",
+        storageBucket: "mock-project.appspot.com",
+        messagingSenderId: "123456789",
+        appId: "1:123456789:web:123456"
+    };
+    const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+    let db = null;
+    let auth = null;
+    let authUser = null;
+
+    // تهيئة بيانات الدخول القابلة للتغيير سحابياً للأطباء مع القيم الافتراضية
+    let liveCredentials = {
+        doc1: { username: "dr.salama_shifa", password: "Salama#Shifa_2026@Vet" },
+        doc2: { username: "dr.samir_shifa", password: "Samir#Shifa_2026@Vet" }
+    };
+
+    // تهيئة الإعدادات الحية لجميع الفروع والدكاترة
+    let liveSettings = {
+        announcement: "أهلاً بكم في عيادة الشفاء للخدمات البيطرية المتكاملة بسوهاج! بانتظار استشاراتكم وحجوزاتكم.",
+        discountPercent: 0,
+        rossPrice: 0,
+        cobbPrice: 0,
+        sassoPrice: 0,
+        baladiPrice: 0,
+        emergencyNotice: "",
+        // د بيتر سلامة
+        doc1Name: "د / بيتر سلامة",
+        doc1Bio: "طبيب بيطري متميز ومحترف، يمتلك خبرة واسعة في تقديم أرقى الخدمات الطبية والجراحية المتكاملة في سوهاج، بما يشمل علاج قطعان المواشي، التلقيح الاصطناعي، رعاية الطيور والدواجن، وتصميم التحصينات المتطورة.",
+        doc1Img: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=200&q=80",
+        doc1Phone1: "01207112780",
+        doc1Phone2: "01553454032",
+        doc1ExDiscount: "",
+        // د بيتر سمير
+        doc2Name: " د / بيتر سمير",
+        doc2Bio: "طبيب بيطري متميز ومحترف، يمتلك خبرة واسعة في تقديم أرقى الخدمات الطبية والجراحية المتكاملة في سوهاج، بما يشمل علاج قطعان المواشي، التلقيح الاصطناعي، رعاية الطيور والدواجن، وتصميم التحصينات المتطورة.",
+        doc2Img: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=200&q=80",
+        doc2Phone1: "01201676133",
+        doc2ExDiscount: "",
+        // الفروع
+        branch1Address: "المربع الشرقي - بجوار صيدلية الدكتور بولس",
+        branch1MapUrl: "https://maps.app.goo.gl/6uo1LcnZQbyQ6YYx7",
+        branch2Address: "سوهاج - بنى حميل - وسط البلد",
+        branch2MapUrl: "https://maps.google.com"
+    };
+
+    // ربط الدوال بالواجهة الرسومية
+    window.openDoctorPanelPortal = openDoctorPanelPortal;
+    window.closeDoctorPanelPortal = closeDoctorPanelPortal;
+    window.authenticateDoctor = authenticateDoctor;
+    window.saveDoctorLiveSettings = saveDoctorLiveSettings;
+    window.logoutDoctorPanel = logoutDoctorPanel;
+    window.submitReview = submitReview;
+    window.switchDoctorTab = switchDoctorTab;
+    window.openImageAlbum = openImageAlbum;
+    window.closeImageAlbum = closeImageAlbum;
+    window.handleLocalImageUpload = handleLocalImageUpload;
+    window.changeDoctorCredentials = changeDoctorCredentials;
+
+    let albumTargetInputId = '';
+
+    const albumPhotos = [
+        { title: "دكتور بيطري (معطف أخضر)", url: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=300&q=80" },
+        { title: "دكتورة بيطرية (معطف أزرق)", url: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=300&q=80" },
+        { title: "دكتور مبتسم بالعيادة", url: "https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&w=300&q=80" },
+        { title: "شعار طبي للعيادات", url: "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=300&q=80" },
+        { title: "طبيب بيطري يفحص", url: "https://images.unsplash.com/photo-1612531382906-89d4936af630?auto=format&fit=crop&w=300&q=80" },
+        { title: "بقرة هولشتاين نقية", url: "https://images.unsplash.com/photo-1570042225831-d98fa7577f1e?auto=format&fit=crop&w=300&q=80" },
+        { title: "قطيع كتاكيت تسمين", url: "https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?auto=format&fit=crop&w=300&q=80" },
+        { title: "أغنام مزارع برية", url: "https://images.unsplash.com/photo-1484557918189-70fbd5d1fc17?auto=format&fit=crop&w=300&q=80" },
+        { title: "خيل عربي أصيل", url: "https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?auto=format&fit=crop&w=300&q=80" }
+    ];
+
+    function openImageAlbum(targetInputId) {
+        albumTargetInputId = targetInputId;
+        const albumModal = document.getElementById('imageAlbumModal');
+        if (albumModal) {
+            albumModal.classList.remove('hidden');
+        }
+        renderAlbumPhotos();
+    }
+
+    function closeImageAlbum() {
+        const albumModal = document.getElementById('imageAlbumModal');
+        if (albumModal) {
+            albumModal.classList.add('hidden');
+        }
+    }
+
+    function renderAlbumPhotos() {
+        const grid = document.getElementById('albumGrid');
+        if (!grid) return;
+        grid.innerHTML = '';
+        albumPhotos.forEach(photo => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.onclick = () => selectAlbumPhoto(photo.url);
+            btn.className = "flex flex-col items-center gap-1.5 p-1.5 bg-slate-50 dark:bg-slate-700 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 border border-slate-100 dark:border-slate-600 rounded-xl transition duration-200";
+            btn.innerHTML = `
+                <div class="w-full h-16 rounded-lg overflow-hidden bg-slate-200">
+                    <img src="${photo.url}" class="w-full h-full object-cover" alt="${photo.title}">
+                </div>
+                <span class="text-[9px] font-bold text-slate-700 dark:text-slate-200 truncate w-full text-center">${photo.title}</span>
+            `;
+            grid.appendChild(btn);
+        });
+    }
+
+    function selectAlbumPhoto(imageUrl) {
+        if (albumTargetInputId) {
+            const targetInput = document.getElementById(albumTargetInputId);
+            if (targetInput) {
+                targetInput.value = imageUrl;
+                window.showAlert("تم اختيار الصورة من الألبوم بنجاح! لا تنس حفظ وتعديل البيانات السحابية بالأسفل دكتور.");
+            }
+        }
+        closeImageAlbum();
+    }
+
+    function handleLocalImageUpload(event, targetInputId) {
+        const file = event.target.files[0];
+        if (!file) return;
+        
+        if (file.size > 2 * 1024 * 1024) {
+            window.showAlert("حجم الصورة كبير جداً! يرجى اختيار صورة أصغر من 2 ميجابايت.");
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const base64Data = e.target.result;
+            const targetInput = document.getElementById(targetInputId);
+            if (targetInput) {
+                targetInput.value = base64Data;
+                window.showAlert("تم قراءة الصورة من ألبوم جهازك بنجاح! يرجى الضغط على حفظ وتعديل البيانات السحابية بالأسفل لتثبيتها.");
+            }
+        };
+        reader.readAsDataURL(file);
+    }
+
+    window.addEventListener('load', async () => {
+        await initFirebase();
+    });
+
+    async function initFirebase() {
+        try {
+            const app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
+            db = getFirestore(app);
+
+            if (initialAuthToken) {
+                await signInWithCustomToken(auth, initialAuthToken);
+            } else {
+                await signInAnonymously(auth);
+            }
+
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    authUser = user;
+                    startSyncingSettings();
+                    startSyncingReviews();
+                    startSyncingCredentials(); // مزامنة بيانات تسجيل الدخول المشفرة للأطباء
+                }
+            });
+        } catch (e) {
+            console.warn("تنبيه: تعذر الاتصال بـ Firebase بالبيئة التجريبية. تشغيل النظام المحاكي الاحتياطي.", e);
+            loadOfflineMockSettings();
+        }
+    }
+
+    function startSyncingSettings() {
+        if (!db) return;
+        const settingsDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'clinicSettings', 'global');
+        
+        onSnapshot(settingsDocRef, (docSnap) => {
+            if (docSnap.exists()) {
+                liveSettings = docSnap.data();
+                applySettingsToUI();
+            } else {
+                setDoc(settingsDocRef, liveSettings);
+                applySettingsToUI();
+            }
+        }, (error) => {
+            console.error("خطأ في مزامنة الإعدادات:", error);
+        });
+    }
+
+    function startSyncingCredentials() {
+        if (!db) return;
+        const credsDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'clinicCredentials', 'auth');
+        
+        onSnapshot(credsDocRef, (docSnap) => {
+            if (docSnap.exists()) {
+                liveCredentials = docSnap.data();
+            } else {
+                setDoc(credsDocRef, liveCredentials);
+            }
+        }, (error) => {
+            console.error("خطأ في مزامنة بيانات الأمان:", error);
+        });
+    }
+
+    function applySettingsToUI() {
+        const marqueeText = document.getElementById('liveAnnouncementText');
+        if (marqueeText) {
+            marqueeText.innerText = liveSettings.announcement || "أهلاً بكم في عيادة الشفاء للخدمات البيطرية المتكاملة بسوهاج!";
+        }
+
+        const doc1NameEl = document.getElementById('doc1Name');
+        const doc1BioEl = document.getElementById('doc1Bio');
+        const doc1ImgEl = document.getElementById('doc1Img');
+        const doc1P1Btn = document.getElementById('doc1Phone1Btn');
+        const doc1P1Text = document.getElementById('doc1Phone1Text');
+        const doc1P2Btn = document.getElementById('doc1Phone2Btn');
+        const doc1P2Text = document.getElementById('doc1Phone2Text');
+        const doc1ExDiscBadge = document.getElementById('doc1ExDiscountBadge');
+
+        if (doc1NameEl) doc1NameEl.innerText = liveSettings.doc1Name || "د / بيتر سلامة";
+        if (doc1BioEl) doc1BioEl.innerText = liveSettings.doc1Bio || "";
+        if (doc1ImgEl && liveSettings.doc1Img) doc1ImgEl.src = liveSettings.doc1Img;
+        if (doc1P1Btn && liveSettings.doc1Phone1) {
+            doc1P1Btn.href = "tel:" + liveSettings.doc1Phone1;
+            if (doc1P1Text) doc1P1Text.innerText = "اتصال رئيسي: " + liveSettings.doc1Phone1;
+        }
+        if (doc1P2Btn && liveSettings.doc1Phone2) {
+            doc1P2Btn.href = "tel:" + liveSettings.doc1Phone2;
+            if (doc1P2Text) doc1P2Text.innerText = "اتصال بديل: " + liveSettings.doc1Phone2;
+        }
+        
+        if (doc1ExDiscBadge) {
+            if (liveSettings.doc1ExDiscount && liveSettings.doc1ExDiscount.trim() !== "") {
+                doc1ExDiscBadge.innerText = liveSettings.doc1ExDiscount;
+                doc1ExDiscBadge.classList.remove('hidden');
+            } else {
+                doc1ExDiscBadge.classList.add('hidden');
+            }
+        }
+
+        const doc2NameEl = document.getElementById('doc2Name');
+        const doc2BioEl = document.getElementById('doc2Bio');
+        const doc2ImgEl = document.getElementById('doc2Img');
+        const doc2P1Btn = document.getElementById('doc2Phone1Btn');
+        const doc2P1Text = document.getElementById('doc2Phone1Text');
+        const doc2ExDiscBadge = document.getElementById('doc2ExDiscountBadge');
+
+        if (doc2NameEl) doc2NameEl.innerText = liveSettings.doc2Name || "د / بيتر سمير";
+        if (doc2BioEl) doc2BioEl.innerText = liveSettings.doc2Bio || "";
+        if (doc2ImgEl && liveSettings.doc2Img) doc2ImgEl.src = liveSettings.doc2Img;
+        if (doc2P1Btn && liveSettings.doc2Phone1) {
+            doc2P1Btn.href = "tel:" + liveSettings.doc2Phone1;
+            if (doc2P1Text) doc2P1Text.innerText = "اتصال رئيسي: " + liveSettings.doc2Phone1;
+        }
+
+        if (doc2ExDiscBadge) {
+            if (liveSettings.doc2ExDiscount && liveSettings.doc2ExDiscount.trim() !== "") {
+                doc2ExDiscBadge.innerText = liveSettings.doc2ExDiscount;
+                doc2ExDiscBadge.classList.remove('hidden');
+            } else {
+                doc2ExDiscBadge.classList.add('hidden');
+            }
+        }
+
+        const br1AddrEl = document.getElementById('branch1Address');
+        const br1LinkEl = document.getElementById('branch1MapsLink');
+        const br2AddrEl = document.getElementById('branch2Address');
+        const br2LinkEl = document.getElementById('branch2MapsLink');
+
+        if (br1AddrEl) br1AddrEl.innerText = liveSettings.branch1Address || "المربع الشرقي - بجوار صيدلية الدكتور بولس";
+        if (br1LinkEl && liveSettings.branch1MapUrl) br1LinkEl.href = liveSettings.branch1MapUrl;
+        
+        if (br2AddrEl) br2AddrEl.innerText = liveSettings.branch2Address || "سوهاج - بنى حميل - وسط البلد";
+        if (br2LinkEl && liveSettings.branch2MapUrl) br2LinkEl.href = liveSettings.branch2MapUrl;
+
+        const footerDoc1Ph = document.getElementById('footerDoc1Phone');
+        const footerDoc2Ph = document.getElementById('footerDoc2Phone');
+        const footerBrAddr = document.getElementById('footerBranchAddress');
+
+        if (footerDoc1Ph) {
+            footerDoc1Ph.innerHTML = `<i class="fa-solid fa-user-doctor text-emerald-500"></i> ${liveSettings.doc1Name}: ${liveSettings.doc1Phone1} ${liveSettings.doc1Phone2 ? ' / ' + liveSettings.doc1Phone2 : ''}`;
+        }
+        if (footerDoc2Ph) {
+            footerDoc2Ph.innerHTML = `<i class="fa-solid fa-stethoscope text-teal-500"></i> ${liveSettings.doc2Name}: ${liveSettings.doc2Phone1}`;
+        }
+        if (footerBrAddr) {
+            footerBrAddr.innerHTML = `<i class="fa-solid fa-location-dot text-emerald-500"></i> ${liveSettings.branch1Address} - بني حميل، سوهاج`;
+        }
+
+        fillDoctorInputsWithLiveSettings();
+
+        if (typeof window.calculateChicks === 'function') {
+            window.calculateChicks();
+        }
+    }
+
+    function fillDoctorInputsWithLiveSettings() {
+        const editAnn = document.getElementById('editAnnouncement');
+        const rPrice = document.getElementById('priceRoss');
+        const cPrice = document.getElementById('priceCobb');
+        const sPrice = document.getElementById('priceSasso');
+        const bPrice = document.getElementById('priceBaladi');
+        const dPercent = document.getElementById('editDiscountPercent');
+        const emerNotice = document.getElementById('emergencyNotice');
+
+        if (editAnn) editAnn.value = liveSettings.announcement || "";
+        if (rPrice) rPrice.value = liveSettings.rossPrice || 0;
+        if (cPrice) cPrice.value = liveSettings.cobbPrice || 0;
+        if (sPrice) sPrice.value = liveSettings.sassoPrice || 0;
+        if (bPrice) bPrice.value = liveSettings.baladiPrice || 0;
+        if (dPercent) dPercent.value = liveSettings.discountPercent || 0;
+        if (emerNotice) emerNotice.value = liveSettings.emergencyNotice || "";
+
+        const d1Name = document.getElementById('editDoc1Name');
+        const d1Bio = document.getElementById('editDoc1Bio');
+        const d1Img = document.getElementById('editDoc1Img');
+        const d1P1 = document.getElementById('editDoc1Phone1');
+        const d1P2 = document.getElementById('editDoc1Phone2');
+        const d1ExD = document.getElementById('editDoc1ExDiscount');
+
+        if (d1Name) d1Name.value = liveSettings.doc1Name || "";
+        if (d1Bio) d1Bio.value = liveSettings.doc1Bio || "";
+        if (d1Img) d1Img.value = liveSettings.doc1Img || "";
+        if (d1P1) d1P1.value = liveSettings.doc1Phone1 || "";
+        if (d1P2) d1P2.value = liveSettings.doc1Phone2 || "";
+        if (d1ExD) d1ExD.value = liveSettings.doc1ExDiscount || "";
+
+        const d2Name = document.getElementById('editDoc2Name');
+        const d2Bio = document.getElementById('editDoc2Bio');
+        const d2Img = document.getElementById('editDoc2Img');
+        const d2P1 = document.getElementById('editDoc2Phone1');
+        const d2ExD = document.getElementById('editDoc2ExDiscount');
+
+        if (d2Name) d2Name.value = liveSettings.doc2Name || "";
+        if (d2Bio) d2Bio.value = liveSettings.doc2Bio || "";
+        if (d2Img) d2Img.value = liveSettings.doc2Img || "";
+        if (d2P1) d2P1.value = liveSettings.doc2Phone1 || "";
+        if (d2ExD) d2ExD.value = liveSettings.doc2ExDiscount || "";
+
+        const br1Addr = document.getElementById('editBranch1Address');
+        const br1Map = document.getElementById('editBranch1MapUrl');
+        const br2Addr = document.getElementById('editBranch2Address');
+        const br2Map = document.getElementById('editBranch2MapUrl');
+
+        if (br1Addr) br1Addr.value = liveSettings.branch1Address || "";
+        if (br1Map) br1Map.value = liveSettings.branch1MapUrl || "";
+        if (br2Addr) br2Addr.value = liveSettings.branch2Address || "";
+        if (br2Map) br2Map.value = liveSettings.branch2MapUrl || "";
+    }
+
+    function loadOfflineMockSettings() {
+        const stored = localStorage.getItem('shifa_offline_settings');
+        if (stored) {
+            liveSettings = JSON.parse(stored);
+        }
+        const storedCreds = localStorage.getItem('shifa_offline_creds');
+        if (storedCreds) {
+            liveCredentials = JSON.parse(storedCreds);
+        }
+        applySettingsToUI();
+    }
+
+    function openDoctorPanelPortal() {
+        const modal = document.getElementById('doctorPanelModal');
+        modal.classList.remove('hidden');
+        document.getElementById('doctorUsername').value = '';
+        document.getElementById('doctorPassword').value = '';
+        
+        if (sessionStorage.getItem('doctor_authenticated') === 'true') {
+            document.getElementById('doctorAuthSection').classList.add('hidden');
+            document.getElementById('doctorControlsSection').classList.remove('hidden');
+            
+            const docName = sessionStorage.getItem('authenticated_doctor_name') || "الطبيب المعالج";
+            const docKey = sessionStorage.getItem('authenticated_doctor_key') || "doc1";
+            
+            const docGreeting = document.getElementById('doctorPanelGreeting');
+            if (docGreeting) {
+                docGreeting.innerText = `مرحباً بك يا ${docName} 👋`;
+            }
+
+            // إخفاء وإظهار بطاقة تعديل الملف الشخصي للطبيب المسجل فقط
+            const card1 = document.getElementById('profileEditCard-doc1');
+            const card2 = document.getElementById('profileEditCard-doc2');
+            if (card1 && card2) {
+                if (docKey === 'doc1') {
+                    card1.classList.remove('hidden');
+                    card2.classList.add('hidden');
+                } else {
+                    card1.classList.add('hidden');
+                    card2.classList.remove('hidden');
+                }
+            }
+            
+            applySettingsToUI();
+        } else {
+            document.getElementById('doctorAuthSection').classList.remove('hidden');
+            document.getElementById('doctorControlsSection').classList.add('hidden');
+        }
+    }
+
+    function closeDoctorPanelPortal() {
+        document.getElementById('doctorPanelModal').classList.add('hidden');
+    }
+
+    function authenticateDoctor() {
+        const user = document.getElementById('doctorUsername').value.trim();
+        const pass = document.getElementById('doctorPassword').value.trim();
+        let docName = "";
+        let docKey = "";
+        
+        // التحقق من المطابقة بناءً على المتغيرات الحية القابلة للتغيير
+        if (user === liveCredentials.doc1.username && pass === liveCredentials.doc1.password) {
+            docName = "د / بيتر سلامة";
+            docKey = "doc1";
+        } 
+        else if (user === liveCredentials.doc2.username && pass === liveCredentials.doc2.password) {
+            docName = "د / بيتر سمير";
+            docKey = "doc2";
+        }
+        
+        if (docName !== "") {
+            sessionStorage.setItem('doctor_authenticated', 'true');
+            sessionStorage.setItem('authenticated_doctor_name', docName);
+            sessionStorage.setItem('authenticated_doctor_key', docKey);
+
+            document.getElementById('doctorAuthSection').classList.add('hidden');
+            document.getElementById('doctorControlsSection').classList.remove('hidden');
+            
+            const docGreeting = document.getElementById('doctorPanelGreeting');
+            if (docGreeting) {
+                docGreeting.innerText = `مرحباً بك يا ${docName} 👋`;
+            }
+
+            // إظهار بطاقة التعديل الخاصة بالطبيب المسجل فقط
+            const card1 = document.getElementById('profileEditCard-doc1');
+            const card2 = document.getElementById('profileEditCard-doc2');
+            if (card1 && card2) {
+                if (docKey === 'doc1') {
+                    card1.classList.remove('hidden');
+                    card2.classList.add('hidden');
+                } else {
+                    card1.classList.add('hidden');
+                    card2.classList.remove('hidden');
+                }
+            }
+
+            // تعبئة حقول بيانات الدخول الجديدة تلقائياً
+            const newU = document.getElementById('newDoctorUsername');
+            const newP = document.getElementById('newDoctorPassword');
+            if (newU) newU.value = liveCredentials[docKey].username;
+            if (newP) newP.value = liveCredentials[docKey].password;
+            
+            window.showAlert(`مرحباً ${docName}! تم التحقق من الهوية وصلاحيات الإشراف بنجاح.`);
+            fillDoctorInputsWithLiveSettings();
+            switchDoctorTab('general');
+        } else {
+            window.showAlert("فشل تسجيل الدخول! اسم المستخدم أو كلمة المرور غير صحيحة.");
+        }
+    }
+
+    async function changeDoctorCredentials() {
+        const docKey = sessionStorage.getItem('authenticated_doctor_key');
+        if (!docKey || !liveCredentials[docKey]) {
+            window.showAlert("حدث خطأ في قراءة صلاحيات الجلسة الحالية!");
+            return;
+        }
+
+        const newU = document.getElementById('newDoctorUsername').value.trim();
+        const newP = document.getElementById('newDoctorPassword').value.trim();
+
+        if (newU === "" || newP === "") {
+            window.showAlert("يرجى كتابة اسم مستخدم وكلمة مرور صالحة دكتور!");
+            return;
+        }
+
+        liveCredentials[docKey].username = newU;
+        liveCredentials[docKey].password = newP;
+
+        // تحديث البيانات سحابياً على الفايربيز
+        if (db && authUser) {
+            try {
+                const credsDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'clinicCredentials', 'auth');
+                await setDoc(credsDocRef, liveCredentials);
+                window.showAlert("تم حفظ بيانات الدخول الجديدة بنجاح على السحابة! 🔒");
+            } catch (err) {
+                console.error("خطأ بحفظ بيانات الدخول:", err);
+                window.showAlert("تعذر الاتصال بالسحابة. تم الحفظ مؤقتاً بجهازك.");
+            }
+        } else {
+            localStorage.setItem('shifa_offline_creds', JSON.stringify(liveCredentials));
+            window.showAlert("تم حفظ بيانات الدخول الجديدة محلياً بنجاح.");
+        }
+    }
+
+    function logoutDoctorPanel() {
+        sessionStorage.removeItem('doctor_authenticated');
+        sessionStorage.removeItem('authenticated_doctor_name');
+        sessionStorage.removeItem('authenticated_doctor_key');
+        document.getElementById('doctorAuthSection').classList.remove('hidden');
+        document.getElementById('doctorControlsSection').classList.add('hidden');
+        window.showAlert("تم الخروج الآمن بنجاح وإغلاق لوحة التحكم.");
+        closeDoctorPanelPortal();
+    }
+
+    function switchDoctorTab(tabId) {
+        document.getElementById('doctorTab-general').classList.add('hidden');
+        document.getElementById('doctorTab-profile').classList.add('hidden');
+        document.getElementById('doctorTab-branches').classList.add('hidden');
+        document.getElementById('doctorTab-security').classList.add('hidden');
+
+        document.getElementById('tabBtn-general').className = "w-1/4 py-2 text-[10px] sm:text-xs font-black text-slate-500 border-b-2 border-transparent";
+        document.getElementById('tabBtn-profile').className = "w-1/4 py-2 text-[10px] sm:text-xs font-black text-slate-500 border-b-2 border-transparent";
+        document.getElementById('tabBtn-branches').className = "w-1/4 py-2 text-[10px] sm:text-xs font-black text-slate-500 border-b-2 border-transparent";
+        document.getElementById('tabBtn-security').className = "w-1/4 py-2 text-[10px] sm:text-xs font-black text-slate-500 border-b-2 border-transparent";
+
+        document.getElementById('doctorTab-' + tabId).classList.remove('hidden');
+        document.getElementById('tabBtn-' + tabId).className = "w-1/4 py-2 text-[10px] sm:text-xs font-black border-b-2 border-red-500 text-red-600 dark:text-red-400";
+        
+        // جلب البيانات الحالية دائمًا عند تبديل تبويب الأمان
+        if (tabId === 'security') {
+            const docKey = sessionStorage.getItem('authenticated_doctor_key');
+            if (docKey && liveCredentials[docKey]) {
+                const newU = document.getElementById('newDoctorUsername');
+                const newP = document.getElementById('newDoctorPassword');
+                if (newU) newU.value = liveCredentials[docKey].username;
+                if (newP) newP.value = liveCredentials[docKey].password;
+            }
+        }
+    }
+
+    async function saveDoctorLiveSettings() {
+        liveSettings.announcement = document.getElementById('editAnnouncement').value.trim();
+        liveSettings.rossPrice = parseFloat(document.getElementById('priceRoss').value) || 0;
+        liveSettings.cobbPrice = parseFloat(document.getElementById('priceCobb').value) || 0;
+        liveSettings.sassoPrice = parseFloat(document.getElementById('priceSasso').value) || 0;
+        liveSettings.baladiPrice = parseFloat(document.getElementById('priceBaladi').value) || 0;
+        liveSettings.discountPercent = parseInt(document.getElementById('editDiscountPercent').value) || 0;
+        liveSettings.emergencyNotice = document.getElementById('emergencyNotice').value.trim();
+
+        liveSettings.doc1Name = document.getElementById('editDoc1Name').value.trim();
+        liveSettings.doc1Bio = document.getElementById('editDoc1Bio').value.trim();
+        liveSettings.doc1Img = document.getElementById('editDoc1Img').value.trim();
+        liveSettings.doc1Phone1 = document.getElementById('editDoc1Phone1').value.trim();
+        liveSettings.doc1Phone2 = document.getElementById('editDoc1Phone2').value.trim();
+        liveSettings.doc1ExDiscount = document.getElementById('editDoc1ExDiscount').value.trim();
+
+        liveSettings.doc2Name = document.getElementById('editDoc2Name').value.trim();
+        liveSettings.doc2Bio = document.getElementById('editDoc2Bio').value.trim();
+        liveSettings.doc2Img = document.getElementById('editDoc2Img').value.trim();
+        liveSettings.doc2Phone1 = document.getElementById('editDoc2Phone1').value.trim();
+        liveSettings.doc2ExDiscount = document.getElementById('editDoc2ExDiscount').value.trim();
+
+        liveSettings.branch1Address = document.getElementById('editBranch1Address').value.trim();
+        liveSettings.branch1MapUrl = document.getElementById('editBranch1MapUrl').value.trim();
+        liveSettings.branch2Address = document.getElementById('editBranch2Address').value.trim();
+        liveSettings.branch2MapUrl = document.getElementById('editBranch2MapUrl').value.trim();
+
+        if (db && authUser) {
+            try {
+                const settingsDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'clinicSettings', 'global');
+                await setDoc(settingsDocRef, liveSettings);
+                window.showAlert("تم حفظ الإعدادات والبيانات السحابية بنجاح! تم التحديث لحظياً لجميع زوار الموقع 🚀");
+            } catch (err) {
+                console.error("خطأ بحفظ الاعدادات سحابياً:", err);
+                window.showAlert("تعذر الوصول للسحابة. تم حفظ التعديلات محلياً بجهازك.");
+            }
+        } else {
+            localStorage.setItem('shifa_offline_settings', JSON.stringify(liveSettings));
+            applySettingsToUI();
+            window.showAlert("تم حفظ التعديلات محلياً بنجاح (وضع المعاينة الفورية).");
+        }
+        closeDoctorPanelPortal();
+    }
+
+    function startSyncingReviews() {
+        if (!db) return;
+        const reviewsColRef = collection(db, 'artifacts', appId, 'public', 'data', 'reviews');
+        
+        onSnapshot(reviewsColRef, (querySnap) => {
+            const reviews = [];
+            querySnap.forEach((doc) => {
+                reviews.push({ id: doc.id, ...doc.data() });
+            });
+            reviews.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+            renderReviews(reviews);
+        }, (err) => {
+            console.error("خطأ في تحميل المراجعات الحية:", err);
+        });
+    }
+
+    function renderReviews(reviews) {
+        const container = document.getElementById('reviewsContainer');
+        if (!container) return;
+        
+        container.innerHTML = '';
+        if (reviews.length === 0) {
+            container.innerHTML = `
+                <div class="text-center p-6 text-slate-400 text-xs font-bold">
+                    لا توجد تقييمات منشورة بعد، كن أول من يكتب تقييمه للعيادة!
+                </div>`;
+            return;
+        }
+
+        reviews.forEach(r => {
+            let starsHtml = '';
+            const rating = r.rating || 5;
+            for (let i = 0; i < rating; i++) {
+                starsHtml += '<i class="fa-solid fa-star"></i>';
+            }
+            for (let i = rating; i < 5; i++) {
+                starsHtml += '<i class="fa-regular fa-star"></i>';
+            }
+
+            const card = document.createElement('div');
+            card.className = "bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm animate-fade-in";
+            card.innerHTML = `
+                <div class="flex items-center justify-between mb-2">
+                    <span class="font-extrabold text-slate-800 dark:text-white text-sm">${r.name}</span>
+                    <div class="flex text-yellow-400 text-xs">
+                        ${starsHtml}
+                    </div>
+                </div>
+                <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-300">${r.text}</p>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    async function submitReview(event) {
+        event.preventDefault();
+        const reviewerName = document.getElementById('reviewName').value.trim();
+        const reviewerText = document.getElementById('reviewText').value.trim();
+        const currentRating = window.currentRating || 5;
+
+        if (!reviewerName || !reviewerText) return;
+
+        const newReviewData = {
+            name: reviewerName,
+            text: reviewerText,
+            rating: currentRating,
+            timestamp: Date.now()
+        };
+
+        if (db && authUser) {
+            try {
+                const reviewsColRef = collection(db, 'artifacts', appId, 'public', 'data', 'reviews');
+                await addDoc(reviewsColRef, newReviewData);
+                window.showAlert("شكراً لك! تم نشر تقييمك سحابياً وظهر لجميع الزوار الآن.");
+            } catch (err) {
+                console.error("خطأ بإضافة تقييم سحابي:", err);
+                window.showAlert("تعذر الاتصال بالسحابة. تم نشر تقييمك محلياً.");
+            }
+        } else {
+            const container = document.getElementById('reviewsContainer');
+            const card = document.createElement('div');
+            card.className = "bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm animate-fade-in";
+            let starsHtml = '';
+            for (let i = 0; i < currentRating; i++) starsHtml += '<i class="fa-solid fa-star"></i>';
+            for (let i = currentRating; i < 5; i++) starsHtml += '<i class="fa-regular fa-star"></i>';
+            card.innerHTML = `
+                <div class="flex items-center justify-between mb-2">
+                    <span class="font-extrabold text-slate-800 dark:text-white text-sm">${reviewerName}</span>
+                    <div class="flex text-yellow-400 text-xs">${starsHtml}</div>
+                </div>
+                <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-300">${reviewerText}</p>
+            `;
+            container.insertBefore(card, container.firstChild);
+            window.showAlert("تم حفظ التقييم محلياً بنجاح.");
+        }
+
+        document.getElementById('reviewName').value = '';
+        document.getElementById('reviewText').value = '';
+        if (typeof window.setStarRating === 'function') {
+            window.setStarRating(5);
+        }
+    }
+
+    window.calculateChicks = function() {
+        const breedSelect = document.getElementById('chickBreed');
+        if (!breedSelect) return;
+        
+        const breed = breedSelect.value;
+        const qty = parseInt(document.getElementById('chickQty').value) || 0;
+        
+        let pricePerUnit = 0;
+        if (breed === 'ross') pricePerUnit = liveSettings.rossPrice || 0;
+        else if (breed === 'cobb') pricePerUnit = liveSettings.cobbPrice || 0;
+        else if (breed === 'sasso') pricePerUnit = liveSettings.sassoPrice || 0;
+        else if (breed === 'baladi') pricePerUnit = liveSettings.baladiPrice || 0;
+
+        const breedText = breedSelect.options[breedSelect.selectedIndex].text.split('(')[0].trim();
+        const docSelect = document.getElementById('chickDoctor');
+        const selectedDocName = docSelect.options[docSelect.selectedIndex].text.split('(')[0].trim();
+
+        const branchRadios = document.getElementsByName('chickBranch');
+        let selectedBranch = "بيت علام";
+        for (const r of branchRadios) {
+            if (r.checked) selectedBranch = r.value;
+        }
+
+        document.getElementById('summaryBreed').innerText = breedText;
+        document.getElementById('summaryQty').innerText = qty + " كتكوت";
+        document.getElementById('summaryBranch').innerText = "فرع " + selectedBranch;
+        document.getElementById('summaryDoctor').innerText = selectedDocName;
+
+        const livePriceDisplay = document.getElementById('liveChickPriceDisplay');
+        const liveTotalDisplay = document.getElementById('liveChickTotalDisplay');
+        const calcWarning = document.getElementById('calcWarningText');
+
+        if (pricePerUnit > 0) {
+            let discount = liveSettings.discountPercent || 0;
+            let originalTotal = qty * pricePerUnit;
+            let finalTotal = originalTotal - (originalTotal * (discount / 100));
+
+            let rateText = `سعر الكتكوت اليوم: ${pricePerUnit} ج.م`;
+            if (discount > 0) {
+                rateText += ` <span class="text-xs bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300 px-1.5 py-0.5 rounded ml-1">خصم ${discount}%</span>`;
+            }
+            livePriceDisplay.innerHTML = rateText;
+
+            liveTotalDisplay.classList.remove('hidden');
+            liveTotalDisplay.innerHTML = `الإجمالي الكلي بعد الخصم: <span class="text-emerald-600 dark:text-emerald-400 text-base font-black">${finalTotal.toLocaleString()} ج.م</span>`;
+            
+            calcWarning.innerHTML = `تم احتساب السعر الكلي للدفعة مباشرة بناءً على أسعار البورصة الحية اليوم المعلنة بواسطة الدكاترة بالعيادة بفرع ${selectedBranch}.`;
+            if (liveSettings.emergencyNotice) {
+                calcWarning.innerHTML += ` <br><strong class="text-red-600 dark:text-red-400">تنويه من الطبيب: ${liveSettings.emergencyNotice}</strong>`;
+            }
+        } else {
+            livePriceDisplay.innerText = "يحدده الطبيب بالواتساب فوراً 💬";
+            liveTotalDisplay.classList.add('hidden');
+            calcWarning.innerText = "نظراً لعدم استقرار البورصة وتغير الأسعار يومياً، سيقوم الطبيب المختار بمجرد استقبال رسالتك بمراجعة طلبك وإعطائك أفضل سعر حالي للدفعة.";
+        }
+    }
+</script>
+
 <script>
     let currentRating = 5;
     let currentUser = null;
@@ -1052,7 +2168,6 @@
         loadTheme();
         checkLoginStatus();
         updateBranchStatuses();
-        calculateChicks();
         
         setInterval(updateBranchStatuses, 60000);
     }
@@ -1125,7 +2240,7 @@
             currentUser = { name, phone };
             localStorage.setItem('shifa_user', JSON.stringify(currentUser));
             checkLoginStatus();
-            showAlert(`مرحباً بك يا ${name} في منصة عيادة الشفاء!`);
+            showAlert(`مرحباً بك يا ${name} في منصة عيادة الشفاء التفاعلية!`);
         }
     }
 
@@ -1146,13 +2261,11 @@
         showAlert("تم تسجيل الخروج بنجاح.");
     }
 
-    // تبديل وتحديث الصورة الحية بالمعرض واللافتة
     function changeHeroImage(url, title) {
         const heroImg = document.getElementById('heroImage');
         heroImg.src = url;
         document.getElementById('heroImgTitle').innerText = title;
         
-        // في حال عدم وجود الصورة المحلية بعد، يتم تطبيق بديل آمن وسريع من الإنترنت
         heroImg.onerror = function() {
             this.onerror = null; 
             if (url.includes('cow')) {
@@ -1164,7 +2277,7 @@
             } else if (url.includes('horse')) {
                 this.src = 'https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?auto=format&fit=crop&w=800&q=80';
             } else {
-                this.src = 'https://placehold.co/800x600/059669/ffffff?text=%D8%B9%D9%8A%D8%A7%D8%AF%D8%A9+%D8%A7%D9%84%D8%B4%D9%81%D8%A7%D8%A1+%D8%A7%D9%84%D8%A8%D9%8A%D8%B7%D8%B1%D9%8A%D8%A9';
+                this.src = 'https://placehold.co/800x600/059669/ffffff?text=%D8%B9%D9%8A%D8%A7%D8%AF%D8%A9+%D8%A7%D9%84%D8%B4%D9%81%D8%A7%D8%A1+%D8%A7%D9%84%D8%A8%D9%8A%D8%B7%D9%8E%D9%8A%D8%A9';
             }
         };
 
@@ -1189,16 +2302,20 @@
         const beitAllamStatus = document.getElementById('beitAllamStatus');
         const baniHumaylStatus = document.getElementById('baniHumaylStatus');
         
-        if (currentDayName === 'Sunday') {
-            beitAllamStatus.innerHTML = '<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-100 text-red-700 text-xs font-bold"><i class="fa-solid fa-circle-xmark"></i> مغلق اليوم (الأحد عطلة)</span>';
-        } else {
-            beitAllamStatus.innerHTML = '<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold animate-pulse"><i class="fa-solid fa-circle-check"></i> مفتوح الآن (' + textDay + ')</span>';
+        if (beitAllamStatus) {
+            if (currentDayName === 'Sunday') {
+                beitAllamStatus.innerHTML = '<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-100 text-red-700 text-xs font-bold"><i class="fa-solid fa-circle-xmark"></i> مغلق اليوم (الأحد عطلة)</span>';
+            } else {
+                beitAllamStatus.innerHTML = '<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold animate-pulse"><i class="fa-solid fa-circle-check"></i> مفتوح الآن (' + textDay + ')</span>';
+            }
         }
 
-        if (currentDayName === 'Friday') {
-            baniHumaylStatus.innerHTML = '<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-100 text-red-700 text-xs font-bold"><i class="fa-solid fa-circle-xmark"></i> مغلق اليوم (الجمعة عطلة)</span>';
-        } else {
-            baniHumaylStatus.innerHTML = '<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold animate-pulse"><i class="fa-solid fa-circle-check"></i> مفتوح الآن (' + textDay + ')</span>';
+        if (baniHumaylStatus) {
+            if (currentDayName === 'Friday') {
+                baniHumaylStatus.innerHTML = '<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-100 text-red-700 text-xs font-bold"><i class="fa-solid fa-circle-xmark"></i> مغلق اليوم (الجمعة عطلة)</span>';
+            } else {
+                baniHumaylStatus.innerHTML = '<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold animate-pulse"><i class="fa-solid fa-circle-check"></i> مفتوح الآن (' + textDay + ')</span>';
+            }
         }
     }
 
@@ -1213,17 +2330,9 @@
         let newVal = currentVal + amount;
         if (newVal < 50) newVal = 50;
         qtyInput.value = newVal;
-        calculateChicks();
-    }
-
-    function calculateChicks() {
-        const select = document.getElementById('chickBreed');
-        const selectedOpt = select.options[select.selectedIndex];
-        const breedName = selectedOpt.text.split('(')[0].trim();
-        const qty = parseInt(document.getElementById('chickQty').value) || 0;
-        
-        document.getElementById('summaryBreed').innerText = breedName;
-        document.getElementById('summaryQty').innerText = qty + " كتكوت";
+        if (typeof window.calculateChicks === 'function') {
+            window.calculateChicks();
+        }
     }
 
     function bookChicksWhatsApp() {
@@ -1250,21 +2359,27 @@
             if (manualPhone) customerPhone = manualPhone;
         }
 
-        const doctorPhone = "201201676133"; // د. بيتر سمير لحجز الكتاكيت
+        const docSelect = document.getElementById('chickDoctor');
+        const selectedDoctor = docSelect.value;
         
-        const messageText = `مرحباً دكتور بيتر سمير، أود الاستفسار عن سعر وحجز دفعة كتاكيت عبر المنصة التفاعلية:\n\n` + 
-                            `• الاسم: ${customerName}\n` + 
-                            `• الهاتف: ${customerPhone}\n` + 
+        let doctorPhone = "201201676133"; // دكتور بيتر سمير الافتراضي
+        if (selectedDoctor === "د بيتر سلامة") {
+            doctorPhone = "201207112780"; // رقم دكتور بيتر سلامة
+        }
+        
+        const messageText = `مرحباً ${selectedDoctor}، أود الاستفسار عن سعر وحجز دفعة كتاكيت عبر المنصة التفاعلية لعيادة الشفاء:\n\n` + 
+                            `• اسم العميل: ${customerName}\n` + 
+                            `• الهاتف للتواصل: ${customerPhone}\n` + 
                             `• السلالة المطلوبة: ${breedName}\n` + 
                             `• الكمية المطلوبة: ${qty} كتكوت\n` + 
                             `• فرع الاستلام المفضل: فرع ${selectedBranch}\n\n` + 
-                            `يرجى إرسال السعر الحالي وتأكيد موعد استلام الدفعة. شكراً جزيلاً!`;
+                            `يرجى إرسال السعر الحالي وتأكيد الحجز لي. شكراً جزيلاً دكتور!`;
                             
         const encodedMsg = encodeURIComponent(messageText);
         const waUrl = `https://api.whatsapp.com/send?phone=${doctorPhone}&text=${encodedMsg}`;
         
         window.open(waUrl, '_blank');
-        showAlert("تم تجهيز الطلب! سيتم نقلك إلى الواتساب الآن لمعرفة السعر من الطبيب.");
+        showAlert(`تم توجيه طلبك إلى ${selectedDoctor} عبر الواتساب بنجاح!`);
     }
 
     function handleBooking(event) {
@@ -1306,6 +2421,7 @@
 
     function setStarRating(stars) {
         currentRating = stars;
+        window.currentRating = stars;
         const buttons = document.querySelectorAll('.star-btn');
         buttons.forEach((btn, index) => {
             if (index < stars) {
@@ -1314,44 +2430,6 @@
                 btn.className = "star-btn text-slate-300 hover:scale-110 transition";
             }
         });
-    }
-
-    function submitReview(event) {
-        event.preventDefault();
-        const reviewerName = document.getElementById('reviewName').value.trim();
-        const reviewerText = document.getElementById('reviewText').value.trim();
-
-        if (!reviewerName || !reviewerText) return;
-
-        const reviewContainer = document.getElementById('reviewsContainer');
-        const newReview = document.createElement('div');
-        newReview.className = "bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm animate-fade-in";
-        
-        let starsHtml = '';
-        for (let i = 0; i < currentRating; i++) {
-            starsHtml += '<i class="fa-solid fa-star"></i>';
-        }
-        for (let i = currentRating; i < 5; i++) {
-            starsHtml += '<i class="fa-regular fa-star"></i>';
-        }
-
-        newReview.innerHTML = `
-            <div class="flex items-center justify-between mb-2">
-                <span class="font-extrabold text-slate-800 dark:text-white text-sm">${reviewerName}</span>
-                <div class="flex text-yellow-400 text-xs">
-                    ${starsHtml}
-                </div>
-            </div>
-            <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-300">${reviewerText}</p>
-        `;
-
-        reviewContainer.insertBefore(newReview, reviewContainer.firstChild);
-
-        document.getElementById('reviewName').value = '';
-        document.getElementById('reviewText').value = '';
-        setStarRating(5);
-
-        showAlert("شكراً لك! تم نشر تقييمك بنجاح على المنصة.");
     }
 
     function showAlert(msg) {
@@ -1368,6 +2446,7 @@
             alertBox.classList.remove('translate-y-0', 'opacity-100');
         }, 4000);
     }
+    window.showAlert = showAlert;
 </script>
 </body>
 </html>
